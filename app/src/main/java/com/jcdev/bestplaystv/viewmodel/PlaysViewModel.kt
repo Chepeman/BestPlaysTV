@@ -1,4 +1,6 @@
-package com.jcdev.bestplaystv
+package com.jcdev.bestplaystv.viewmodel
 
-class PlaysViewModel {
+import android.arch.lifecycle.ViewModel
+
+class PlaysViewModel : ViewModel() {
 }

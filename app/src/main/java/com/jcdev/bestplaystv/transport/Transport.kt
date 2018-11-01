@@ -6,8 +6,8 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface ITransport {
-    @GET("/games")
+interface Transport {
+    @GET("data/v1/games")
     fun getGames(
         @Query("appid") appId: String,
         @Query("appkey") appKey: String
