@@ -25,7 +25,7 @@ class MainViewModel : PlaysViewModel() {
             if(gamesResponse.isSuccessful) {
                 val gamesEncoded = gamesResponse.body()
 
-                gamesEncoded?.content?.games?.asSequence()?.filter { it.value.stats.videos > 300 }?.forEach {
+                gamesEncoded?.content?.games?.asSequence()?.filter { it.value.stats.videos > 1000 }?.forEach {
                     videoGamesList.add(it.value)
                 }
 

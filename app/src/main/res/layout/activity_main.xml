@@ -13,7 +13,9 @@
             android:id="@+id/toolbar_top"
             layout="@layout/toolbar_plays"/>
 
-    <ListView android:layout_width="match_parent"
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/popularGamesView"
+            android:layout_width="match_parent"
               android:layout_height="match_parent"/>
 
 </LinearLayout>
