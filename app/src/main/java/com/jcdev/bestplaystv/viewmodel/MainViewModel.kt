@@ -19,14 +19,17 @@ class MainViewModel : PlaysViewModel() {
 
     fun requestMostPopularGames() {
         GlobalScope.launch(Dispatchers.Main) {
-            var videoGamesList = ArrayList<Game>()
+            val videoGamesList = ArrayList<Game>()
             val gamesRequest = playsTransport.getGames()
             val gamesResponse = gamesRequest.await()
             if(gamesResponse.isSuccessful) {
                 val gamesEncoded = gamesResponse.body()
 
-                gamesEncoded?.content?.games?.asSequence()?.filter { it.value.stats.videos > 1000 }?.forEach {
-                    videoGamesList.add(it.value)
+                gamesEncoded?.content?.games?.asSequence()?.sortedByDescending{ it.value.stats.videos }?.
+                    take(20)?.
+                    forEach {
+                        it.value.thumbnail.replace("exmedium", "exlarge")
+                        videoGamesList.add(it.value)
                 }
 
                 _popularVideoGames.value = videoGamesList

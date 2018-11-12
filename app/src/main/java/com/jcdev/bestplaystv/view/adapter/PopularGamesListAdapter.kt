@@ -1,10 +1,12 @@
 package com.jcdev.bestplaystv.view.adapter
 
+import android.media.Image
 import android.support.v7.widget.RecyclerView
 import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.jcdev.bestplaystv.R
 import com.jcdev.bestplaystv.model.Game
 import com.squareup.picasso.Picasso
@@ -12,7 +14,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.listitem_popular_game.*
 import kotlinx.android.synthetic.main.listitem_popular_game.view.*
 
-class PopularGamesListAdapter(var gameList : List<Game>, val listener: (Game) -> Unit) : RecyclerView.Adapter<PopularGamesViewHolder>() {
+class PopularGamesListAdapter(var gameList : List<Game>, val listener: (Game, ImageView) -> Unit) : RecyclerView.Adapter<PopularGamesViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): PopularGamesViewHolder {
         return PopularGamesViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.listitem_popular_game, p0, false))
@@ -37,7 +39,7 @@ class PopularGamesListAdapter(var gameList : List<Game>, val listener: (Game) ->
 }
 
 class PopularGamesViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-    fun bind(game : Game, listener: (Game) -> Unit) = with(itemView) {
+    fun bind(game : Game, listener: (Game, ImageView) -> Unit) = with(itemView) {
         if(game.thumbnail.startsWith("//")) {
             val subStringUrl = "https://" + game.thumbnail.substring(2, game.thumbnail.length)
             Picasso.get().load(subStringUrl).into(gameImage)
@@ -47,7 +49,7 @@ class PopularGamesViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView
 
         gameTitleText.text = game.title
         setOnClickListener {
-            listener(game)
+            listener(game, gameImage)
         }
     }
 }

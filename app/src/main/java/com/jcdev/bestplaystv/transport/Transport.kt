@@ -1,6 +1,7 @@
 package com.jcdev.bestplaystv.transport
 
 import com.jcdev.bestplaystv.model.GameResponse
+import com.jcdev.bestplaystv.model.VideoResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
@@ -12,6 +13,13 @@ interface Transport {
         @Query("appid") appId: String,
         @Query("appkey") appKey: String
     ) : Deferred<Response<GameResponse>>
+
+    @GET("data/v1/videos/search")
+    fun getRandomVideosById(
+        @Query("appid") appId: String,
+        @Query("appkey") appKey: String,
+        @Query("gameId") gameId: String
+    ) : Deferred<Response<VideoResponse>>
 
 
     /*

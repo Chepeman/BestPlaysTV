@@ -2,20 +2,30 @@
 <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-                                   android:id="@+id/toolbar_top"
-                                   android:layout_height="wrap_content"
-                                   android:layout_width="match_parent"
-                                   android:minHeight="?attr/actionBarSize"
-                                   android:background="@color/colorPrimary"
-                                   app:theme="@style/AppTheme">
+        android:id="@+id/toolbar_top"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:theme="@style/ToolBarStyle">
 
-    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <ImageView android:layout_width="100dp"
                    android:layout_height="50dp"
+                   android:layout_centerInParent="true"
                    android:src="@drawable/plays_logo_white"
-        android:layout_gravity="center"/>
-    </FrameLayout>
+                   android:layout_gravity="center"/>
+        <ImageView
+                android:id="@+id/searchIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                   android:src="@drawable/ic_search_white"
+                   android:layout_alignParentEnd="true"
+                   android:layout_centerVertical="true"
+                   android:layout_marginEnd="16dp"/>
 
+    </RelativeLayout>
 
 
 </android.support.v7.widget.Toolbar>
