@@ -1,7 +1,7 @@
 package com.jcdev.bestplaystv.view.adapter
 
 import android.media.Image
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
@@ -40,12 +40,12 @@ class PopularGamesListAdapter(var gameList : List<Game>, val listener: (Game, Im
 
 class PopularGamesViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
     fun bind(game : Game, listener: (Game, ImageView) -> Unit) = with(itemView) {
-        if(game.thumbnail.startsWith("//")) {
-            val subStringUrl = "https://" + game.thumbnail.substring(2, game.thumbnail.length)
-            Picasso.get().load(subStringUrl).into(gameImage)
-        } else {
-            Picasso.get().load(game.thumbnail).into(gameImage)
-        }
+        Picasso.get()
+            .load("https:" + game.thumbnail.replace("exmedium", "exlarge"))
+            .fit()
+            .noFade()
+            .centerCrop()
+            .into(gameImage)
 
         gameTitleText.text = game.title
         setOnClickListener {

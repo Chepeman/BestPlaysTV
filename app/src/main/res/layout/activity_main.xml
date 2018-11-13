@@ -13,7 +13,7 @@
             android:id="@+id/toolbar_top"
             layout="@layout/toolbar_plays"/>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/popularGamesView"
             android:layout_width="match_parent"
               android:layout_height="match_parent"/>

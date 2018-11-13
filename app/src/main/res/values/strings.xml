@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">BestPlaysTV</string>
     <string name="search_by">Search by game or by username</string>
+    <string name="related_videos">Related Videos</string>
 </resources>

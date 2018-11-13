@@ -1,6 +1,6 @@
 package com.jcdev.bestplaystv.viewmodel
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.jcdev.bestplaystv.dependencyinjection.DependencyInjection
 import com.jcdev.bestplaystv.transport.PlaysTransport
 import javax.inject.Inject

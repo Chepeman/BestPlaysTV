@@ -1,21 +1,25 @@
 package com.jcdev.bestplaystv.view.activity
 
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.jcdev.bestplaystv.R
 import com.jcdev.bestplaystv.model.Game
+import com.jcdev.bestplaystv.view.adapter.PopularGamesListAdapter
+import com.jcdev.bestplaystv.view.adapter.RandomGameVideoAdapter
 import com.jcdev.bestplaystv.viewmodel.GameDetailViewModel
-import com.jcdev.bestplaystv.viewmodel.MainViewModel
-import com.jcdev.bestplaystv.viewmodel.SearchViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_game_detail.*
+import kotlinx.android.synthetic.main.listitem_related_video.*
 
 
 class GameDetailActivity : PlaysActivity() {
 
     private lateinit var game : Game
+    private lateinit var videoAdapter : RandomGameVideoAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +40,9 @@ class GameDetailActivity : PlaysActivity() {
                 .get(GameDetailViewModel::class.java)
 
             gameTitleText.text = game.title
+            gameTitleViews.text = game.stats.videos.toString() + " Views"
             Picasso.get()
-                .load("https:" + game.thumbnail)
+                .load("https:" + game.thumbnail.replace("exmedium", "exlarge"))
                 .fit()
                 .noFade()
                 .centerCrop()
@@ -51,6 +56,12 @@ class GameDetailActivity : PlaysActivity() {
                     }
                 })
 
+            videoAdapter = RandomGameVideoAdapter(ArrayList(0))
+            suggestedPlaysView.layoutManager = LinearLayoutManager(this)
+            suggestedPlaysView.adapter = videoAdapter
+            viewModel.randomGameVideos.observe(this, Observer {
+                videoAdapter.loadItems(it!!.toList())
+            })
             viewModel.getRandomGameVideos()
         } else {
             finishAfterTransition()

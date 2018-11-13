@@ -6,7 +6,7 @@
               android:layout_height="match_parent"
               android:background="@color/colorPrimary"
               android:orientation="vertical">
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -24,8 +24,8 @@
                 android:textColorHint="@color/whiter_gray"
                 android:hint="@string/search_by"
                 android:background="@drawable/round_background_searchview"/>
-    </android.support.v7.widget.Toolbar>
-    <android.support.v7.widget.RecyclerView
+    </androidx.appcompat.widget.Toolbar>
+    <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/resultsView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

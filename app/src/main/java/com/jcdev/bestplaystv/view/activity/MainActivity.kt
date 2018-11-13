@@ -1,20 +1,18 @@
 package com.jcdev.bestplaystv.view.activity
 
-import android.app.ActivityOptions
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
 import android.util.Log
+import android.widget.ImageView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import com.jcdev.bestplaystv.R
 import com.jcdev.bestplaystv.model.Game
 import com.jcdev.bestplaystv.view.adapter.PopularGamesListAdapter
 import com.jcdev.bestplaystv.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_plays.*
-import android.support.v4.app.ActivityOptionsCompat
-import android.widget.ImageView
 
 
 class MainActivity : PlaysActivity() {

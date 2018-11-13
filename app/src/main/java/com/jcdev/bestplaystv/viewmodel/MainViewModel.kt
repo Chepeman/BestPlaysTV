@@ -1,7 +1,7 @@
 package com.jcdev.bestplaystv.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.jcdev.bestplaystv.model.Game
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

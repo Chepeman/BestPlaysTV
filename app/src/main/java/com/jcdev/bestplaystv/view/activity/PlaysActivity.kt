@@ -1,9 +1,9 @@
 package com.jcdev.bestplaystv.view.activity
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.jcdev.bestplaystv.dependencyinjection.DependencyInjection
 import com.jcdev.bestplaystv.transport.PlaysTransport
 import com.jcdev.bestplaystv.transport.Transport

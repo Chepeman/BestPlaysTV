@@ -1,11 +1,17 @@
 package com.jcdev.bestplaystv.model
 
 import com.google.gson.annotations.SerializedName
-import com.jcdev.bestplaystv.viewmodel.PlaysViewModel
 
 data class VideoResponse(
-    @SerializedName("result_count")
-    val resultCount: Int,
+    @SerializedName("code")
+    val code: Int,
     @SerializedName("content")
+    val content: VideoContent
+)
+
+data class VideoContent(
+    @SerializedName("result_count")
+    val resultCount : Int,
+    @SerializedName("items")
     val items: List<Video>
 )
