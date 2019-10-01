@@ -2,10 +2,13 @@ package com.jcdev.bestplaystv.dependencyinjection
 
 import android.app.Application
 import android.content.Context
+import androidx.room.Room
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 
 import com.jcdev.bestplaystv.BuildConfig
 import com.jcdev.bestplaystv.base.BaseView
+import com.jcdev.bestplaystv.database.PlaysDatabase
+import com.jcdev.bestplaystv.database.PlaysRepository
 import com.jcdev.bestplaystv.transport.PlaysTransport
 import com.jcdev.bestplaystv.transport.Transport
 import dagger.*
@@ -44,5 +47,27 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
+    }
+
+    @Provides
+    @Reusable
+    @JvmStatic
+    internal fun providePlaysDatabase(application: Application): PlaysDatabase {
+        return Room.databaseBuilder(
+            application.applicationContext,
+            PlaysDatabase::class.java,
+            PlaysDatabase.NAME
+        )
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    @Provides
+    @Reusable
+    @JvmStatic
+    internal fun providePlaysRepository(database: PlaysDatabase): PlaysRepository {
+        return PlaysRepository(
+            database.gameDao
+        )
     }
 }

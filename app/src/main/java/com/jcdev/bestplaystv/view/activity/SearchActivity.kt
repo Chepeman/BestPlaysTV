@@ -1,15 +1,19 @@
 package com.jcdev.bestplaystv.view.activity
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.jcdev.bestplaystv.R
-import com.jcdev.bestplaystv.viewmodel.MainViewModel
+import com.jcdev.bestplaystv.view.adapter.SearchAdapter
 import com.jcdev.bestplaystv.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : PlaysActivity() {
+
+    private lateinit var searchAdapter: SearchAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +22,9 @@ class SearchActivity : PlaysActivity() {
         val viewModel = ViewModelProviders.of(this)
             .get(SearchViewModel::class.java)
 
+        searchAdapter = SearchAdapter(ArrayList(0))
+        resultsView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        resultsView.adapter = searchAdapter
         searchText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -32,10 +39,14 @@ class SearchActivity : PlaysActivity() {
             }
 
         })
+
+        viewModel.gameList.observe(this, Observer {
+            searchAdapter.loadItems(it!!.toList())
+        })
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-        overridePendingTransition(0,0)
+        overridePendingTransition(0, 0)
     }
 }

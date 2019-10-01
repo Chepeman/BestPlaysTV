@@ -28,9 +28,13 @@ class MainViewModel : PlaysViewModel() {
                 val gamesEncoded = gamesResponse.body()
 
                 gamesEncoded?.content?.games?.asSequence()
-                    ?.sortedByDescending { it.value.stats.videos }?.take(20)?.forEach {
-                        it.value.thumbnail.replace("exmedium", "exlarge")
-                        videoGamesList.add(it.value)
+                    ?.sortedByDescending { it.value.stats.videos }?.let { games ->
+                        games.take(20)?.forEach {
+                            it.value.thumbnail.replace("exmedium", "exlarge")
+                            videoGamesList.add(it.value)
+                        }
+
+                        insertAllGamesInDB(games)
                     }
 
                 _popularVideoGames.postValue(videoGamesList)
@@ -40,6 +44,13 @@ class MainViewModel : PlaysViewModel() {
             }
         }
     }
+
+    private fun insertAllGamesInDB(games: Sequence<Map.Entry<String, Game>>) {
+        games.forEach {
+            playsRepository.insertGame(it.value)
+        }
+    }
+
 
     override fun onCleared() {
         super.onCleared()

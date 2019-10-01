@@ -5,5 +5,7 @@ import java.io.Serializable
 
 data class Stats(
     @SerializedName("videos")
-    val videos: Int
+    val videos: Int,
+    @SerializedName("followers")
+    val followers: String
 ) : Serializable
