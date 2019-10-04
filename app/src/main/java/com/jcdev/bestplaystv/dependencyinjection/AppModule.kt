@@ -7,12 +7,14 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 
 import com.jcdev.bestplaystv.BuildConfig
 import com.jcdev.bestplaystv.base.BaseView
+import com.jcdev.bestplaystv.cast.PlaysCast
 import com.jcdev.bestplaystv.database.PlaysDatabase
 import com.jcdev.bestplaystv.database.PlaysRepository
 import com.jcdev.bestplaystv.transport.PlaysTransport
 import com.jcdev.bestplaystv.transport.Transport
 import dagger.*
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -42,8 +44,17 @@ object AppModule {
     @Reusable
     @JvmStatic
     internal fun provideRetrofitInterface(): Retrofit {
+        val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+            this.level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val client : OkHttpClient = OkHttpClient.Builder().apply {
+            this.addInterceptor(interceptor)
+        }.build()
+
         return Retrofit.Builder()
             .baseUrl(BuildConfig.baseUrl)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
@@ -69,5 +80,12 @@ object AppModule {
         return PlaysRepository(
             database.gameDao
         )
+    }
+
+    @Provides
+    @Reusable
+    @JvmStatic
+    internal fun providePlaysCast(application: Application): PlaysCast {
+        return PlaysCast(application)
     }
 }

@@ -20,7 +20,7 @@
                 android:minHeight="?attr/actionBarSize"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                tools:context=".view.activity.GameDetailActivity">
+                tools:context=".view.activity.DetailActivity">
 
             <ImageView
                     android:id="@+id/gameImage"
@@ -33,7 +33,7 @@
 
             <TextView
                     android:id="@+id/gameTitleText"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="regular"
                     android:textSize="20sp"
@@ -44,15 +44,15 @@
                     android:paddingEnd="5dp"
                     tools:text="Counter Strike : Global Offensive"
                     android:maxLines="1"
+                    android:ellipsize="end"
                     app:layout_constraintStart_toEndOf="@id/gameImage"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/gameTitleViews"
             />
 
             <TextView
                     android:id="@+id/gameTitleViews"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="regular"
                     android:textSize="15sp"
@@ -61,9 +61,9 @@
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp"
                     android:maxLines="1"
+                    android:ellipsize="end"
                     tools:text="Counter Strike : Global Offensive"
                     app:layout_constraintStart_toEndOf="@id/gameImage"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/gameTitleText"
                     app:layout_constraintBottom_toBottomOf="parent"
             />

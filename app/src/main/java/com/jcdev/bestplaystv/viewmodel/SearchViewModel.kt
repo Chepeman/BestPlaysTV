@@ -13,8 +13,8 @@ class SearchViewModel() : PlaysViewModel() {
     private val viewModelJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Default + viewModelJob)
 
-    private val _gameList: MutableLiveData<List<Game>> = MutableLiveData()
-    val gameList: LiveData<List<Game>>
+    private val _gameList: MutableLiveData<MutableList<Any>> = MutableLiveData()
+    val gameList: LiveData<MutableList<Any>>
         get() {
             return _gameList
         }
@@ -32,7 +32,7 @@ class SearchViewModel() : PlaysViewModel() {
                 resultList.add(it)
             }
 
-            _gameList.postValue(gamesByQuery)
+            _gameList.postValue(resultList)
         }
     }
 

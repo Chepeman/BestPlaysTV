@@ -2,6 +2,7 @@ package com.jcdev.bestplaystv.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.jcdev.bestplaystv.model.Game
 
 @Database(
@@ -9,6 +10,7 @@ import com.jcdev.bestplaystv.model.Game
     version = PlaysDatabase.VERSION
 )
 
+@TypeConverters(Converters::class)
 abstract class PlaysDatabase : RoomDatabase() {
 
     abstract val gameDao: GamesDao

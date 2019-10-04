@@ -10,7 +10,7 @@ import com.jcdev.bestplaystv.model.User
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.listitem_search.view.*
 
-class SearchAdapter(var searchList: List<Any>) :
+class SearchAdapter(var searchList: List<Any>, private val listener: (Any) -> Unit) :
     RecyclerView.Adapter<SearchResultsVH>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): SearchResultsVH {
@@ -28,17 +28,18 @@ class SearchAdapter(var searchList: List<Any>) :
     }
 
     override fun onBindViewHolder(searchResultsVH: SearchResultsVH, position: Int) {
-        searchResultsVH.bind(searchList[position])
+        searchResultsVH.bind(searchList[position], listener)
     }
 
     fun loadItems(searchItems: List<Any>) {
+        notifyItemRangeRemoved(0, searchList.size)
         searchList = searchItems
-        notifyItemRangeChanged(0, searchList.size)
+        notifyItemRangeInserted(0, searchList.size)
     }
 }
 
 class SearchResultsVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bind(item: Any) = with(itemView) {
+    fun bind(item: Any, listener: (Any) -> Unit) = with(itemView) {
         if (item is Game) {
             Picasso.get()
                 .load("https:" + item.thumbnail.replace("exmedium", "exlarge"))
@@ -56,6 +57,10 @@ class SearchResultsVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 .centerCrop()
                 .into(itemImage)
             itemTitle.text = userItem.id
+        }
+
+        setOnClickListener {
+            listener(item)
         }
     }
 }

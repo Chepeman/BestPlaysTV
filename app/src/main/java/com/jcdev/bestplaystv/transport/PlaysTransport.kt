@@ -25,6 +25,14 @@ class PlaysTransport(private val transport: Transport, private val context: Cont
         )
     }
 
+    fun getRandomVideosByUserId(userId: String): Deferred<Response<VideoResponse>> {
+        return transport.getUserVideosById(
+            context.getString(R.string.app_id),
+            context.getString(R.string.app_key),
+            userId
+        )
+    }
+
     fun getUser(username: String): Deferred<Response<UserResponse>> {
         return transport.getUser(
             username,

@@ -21,7 +21,7 @@
         </activity>
         <activity android:name=".view.activity.SearchActivity">
         </activity>
-        <activity android:name=".view.activity.GameDetailActivity">
+        <activity android:name=".view.activity.DetailActivity">
         </activity>
     </application>
 

@@ -23,21 +23,18 @@ interface Transport {
         @Query("gameId") gameId: String
     ) : Deferred<Response<VideoResponse>>
 
+    @GET("data/v1/videos/search")
+    fun getUserVideosById(
+        @Query("appid") appId: String,
+        @Query("appkey") appKey: String,
+        @Query("userId") userId: String
+    ) : Deferred<Response<VideoResponse>>
 
-    @GET("/users/{username}")
+
+    @GET("/data/v1/users/{username}")
     fun getUser(
         @Path("username") username: String,
-        @Query("appkey") appKey: String,
-        @Query("gameId") gameId: String
+        @Query("appid") appId: String,
+        @Query("appkey") appKey: String
     ) : Deferred<Response<UserResponse>>
-
-    /*
-    @GET("characters?orderBy=-modified&nameStartsWith=th")
-    fun getCharacters(
-            @Query("ts") ts: Long,
-            @Query("apikey") apiKey: String,
-            @Query("hash") hash: String,
-            @Query("limit") limit: Int
-            ): Observable<MarvelResponse<Character>>
-     */
 }

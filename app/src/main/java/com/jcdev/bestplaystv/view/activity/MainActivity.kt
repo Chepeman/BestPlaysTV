@@ -47,7 +47,7 @@ class MainActivity : PlaysActivity() {
 
     private fun onPopularGameClicked(game : Game, imageGame: ImageView) {
         Log.d("[Plays.TV]", "Clicked! " + game.title)
-        val intent = Intent(this, GameDetailActivity::class.java)
+        val intent = Intent(this, DetailActivity::class.java)
         val bundle = Bundle()
         bundle.putSerializable("game", game)
         intent.putExtras(bundle)

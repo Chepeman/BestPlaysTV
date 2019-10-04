@@ -1,5 +1,6 @@
 package com.jcdev.bestplaystv.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,6 +8,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jcdev.bestplaystv.R
+import com.jcdev.bestplaystv.model.Game
+import com.jcdev.bestplaystv.model.User
 import com.jcdev.bestplaystv.view.adapter.SearchAdapter
 import com.jcdev.bestplaystv.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.activity_search.*
@@ -22,16 +25,16 @@ class SearchActivity : PlaysActivity() {
         val viewModel = ViewModelProviders.of(this)
             .get(SearchViewModel::class.java)
 
-        searchAdapter = SearchAdapter(ArrayList(0))
+        searchAdapter = SearchAdapter(ArrayList(0)) {
+                item: Any ->  onItemClicked(item)
+        }
         resultsView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         resultsView.adapter = searchAdapter
         searchText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onTextChanged(textChanged: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -49,4 +52,17 @@ class SearchActivity : PlaysActivity() {
         super.onBackPressed()
         overridePendingTransition(0, 0)
     }
+
+    private fun onItemClicked(item: Any) {
+        val intent = Intent(this, DetailActivity::class.java)
+        val bundle = Bundle()
+        if (item is Game) {
+            bundle.putSerializable("game", item)
+        } else {
+            bundle.putSerializable("user", item as User)
+        }
+        intent.putExtras(bundle)
+        startActivity(intent)
+    }
+
 }
