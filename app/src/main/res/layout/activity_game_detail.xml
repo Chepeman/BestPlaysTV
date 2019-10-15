@@ -20,7 +20,7 @@
                 android:minHeight="?attr/actionBarSize"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                tools:context=".view.activity.DetailActivity">
+                tools:context=".ui.view.activity.DetailActivity">
 
             <ImageView
                     android:id="@+id/gameImage"

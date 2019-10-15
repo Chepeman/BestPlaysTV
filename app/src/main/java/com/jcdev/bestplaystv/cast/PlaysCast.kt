@@ -43,6 +43,13 @@ class PlaysCast(context: Context) :
                 resolutions.last() +
                 ".mp4"
 
+        if (video.videoId.length == 28) {
+            videoUrl.replace("/media/", "/video/").replace(
+                "/transcoded/",
+                "/processed/"
+            )
+        }
+
         val movieMetadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE)
         movieMetadata.putString(MediaMetadata.KEY_TITLE, video.description)
         movieMetadata.putString(MediaMetadata.KEY_ALBUM_ARTIST, video.author.id)

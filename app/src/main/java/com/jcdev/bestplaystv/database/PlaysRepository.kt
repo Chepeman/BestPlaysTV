@@ -14,4 +14,8 @@ class PlaysRepository(private val gamesDao: GamesDao) {
     fun getGameById(id: String): Game {
         return gamesDao.getGameById(id)
     }
+
+    fun getAllGames(): List<Game> {
+        return gamesDao.getAllGames()
+    }
 }

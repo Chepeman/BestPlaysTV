@@ -1,4 +1,4 @@
-package com.jcdev.bestplaystv.view.activity
+package com.jcdev.bestplaystv.ui.view.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jcdev.bestplaystv.R
 import com.jcdev.bestplaystv.model.Game
 import com.jcdev.bestplaystv.model.User
-import com.jcdev.bestplaystv.view.adapter.SearchAdapter
-import com.jcdev.bestplaystv.viewmodel.SearchViewModel
+import com.jcdev.bestplaystv.ui.view.adapter.SearchAdapter
+import com.jcdev.bestplaystv.ui.view.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : PlaysActivity() {
@@ -25,9 +25,10 @@ class SearchActivity : PlaysActivity() {
         val viewModel = ViewModelProviders.of(this)
             .get(SearchViewModel::class.java)
 
-        searchAdapter = SearchAdapter(ArrayList(0)) {
-                item: Any ->  onItemClicked(item)
-        }
+        searchAdapter =
+            SearchAdapter(ArrayList(0)) { item: Any ->
+                onItemClicked(item)
+            }
         resultsView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         resultsView.adapter = searchAdapter
         searchText.addTextChangedListener(object : TextWatcher {

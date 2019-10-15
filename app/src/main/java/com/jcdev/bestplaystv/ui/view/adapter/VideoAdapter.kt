@@ -1,4 +1,4 @@
-package com.jcdev.bestplaystv.view.adapter
+package com.jcdev.bestplaystv.ui.view.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -59,6 +59,19 @@ class VideoAdapter(
             } else {
                 videoView.visibility = View.GONE
                 videoThumbnail.visibility = View.VISIBLE
+
+                val videoUrl = "https:" + video.thumbnail.replace("exmedium", "exlarge")
+                if (video.videoId.length == 28) {
+                    videoUrl.replace("/media/", "/video/").replace(
+                        "/transcoded/",
+                        "/processed/"
+                    )
+                } else {
+                    videoUrl.replace("/video/", "/media/").replace(
+                        "/processed/",
+                        "/transcoded/")
+                }
+
                 Picasso.get()
                     .load("https:" + video.thumbnail.replace("exmedium", "exlarge"))
                     .fit()

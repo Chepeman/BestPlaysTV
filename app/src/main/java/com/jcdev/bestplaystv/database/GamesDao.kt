@@ -16,4 +16,7 @@ interface GamesDao {
 
     @Query("SELECT * from games WHERE `id` = (:id)")
     fun getGameById(id: String): Game
+
+    @Query("SELECT * from games")
+    fun getAllGames(): List<Game>
 }

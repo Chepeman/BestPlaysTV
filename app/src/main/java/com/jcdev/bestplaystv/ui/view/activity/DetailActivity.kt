@@ -1,4 +1,4 @@
-package com.jcdev.bestplaystv.view.activity
+package com.jcdev.bestplaystv.ui.view.activity
 
 import android.os.Bundle
 import android.view.Menu
@@ -14,8 +14,8 @@ import com.jcdev.bestplaystv.model.Game
 import com.jcdev.bestplaystv.model.User
 import com.jcdev.bestplaystv.model.Video
 import com.jcdev.bestplaystv.transport.PlaysTransport
-import com.jcdev.bestplaystv.view.adapter.VideoAdapter
-import com.jcdev.bestplaystv.viewmodel.DetailViewModel
+import com.jcdev.bestplaystv.ui.view.adapter.VideoAdapter
+import com.jcdev.bestplaystv.ui.view.viewmodel.DetailViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_game_detail.*
@@ -56,11 +56,11 @@ class DetailActivity : PlaysActivity(), CastPlayer.SessionAvailabilityListener {
                     .centerCrop()
                     .into(gameImage, object : Callback {
                         override fun onSuccess() {
-                            supportStartPostponedEnterTransition();
+                            supportStartPostponedEnterTransition()
                         }
 
                         override fun onError(e: Exception?) {
-                            supportStartPostponedEnterTransition();
+                            supportStartPostponedEnterTransition()
                         }
                     })
             } else {
@@ -86,12 +86,18 @@ class DetailActivity : PlaysActivity(), CastPlayer.SessionAvailabilityListener {
             }
 
             //InitModelView
-            val viewModel = ViewModelProviders.of(this, viewModelFactory { DetailViewModel(id, type) })
+            val viewModel = ViewModelProviders.of(this, viewModelFactory {
+                DetailViewModel(
+                    id,
+                    type
+                )
+            })
                 .get(DetailViewModel::class.java)
 
-            videoAdapter = VideoAdapter(ArrayList(0)) {
-                    video: Video ->  onVideoClicked(video)
-            }
+            videoAdapter =
+                VideoAdapter(ArrayList(0)) { video: Video ->
+                    onVideoClicked(video)
+                }
             suggestedPlaysView.layoutManager = LinearLayoutManager(this)
             suggestedPlaysView.adapter = videoAdapter
             viewModel.randomGameVideos.observe(this, Observer {
@@ -108,8 +114,17 @@ class DetailActivity : PlaysActivity(), CastPlayer.SessionAvailabilityListener {
         CastButtonFactory.setUpMediaRouteButton(
             applicationContext,
             menu,
-            R.id.media_route_menu_item);
+            R.id.media_route_menu_item)
         return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        CastButtonFactory.setUpMediaRouteButton(
+            applicationContext,
+            menu,
+            R.id.media_route_menu_item)
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

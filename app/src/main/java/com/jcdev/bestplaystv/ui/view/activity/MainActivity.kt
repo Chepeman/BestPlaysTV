@@ -1,5 +1,6 @@
-package com.jcdev.bestplaystv.view.activity
+package com.jcdev.bestplaystv.ui.view.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,12 +8,13 @@ import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import com.jcdev.bestplaystv.R
 import com.jcdev.bestplaystv.model.Game
-import com.jcdev.bestplaystv.view.adapter.PopularGamesListAdapter
-import com.jcdev.bestplaystv.viewmodel.MainViewModel
+import com.jcdev.bestplaystv.ui.view.adapter.PopularGamesListAdapter
+import com.jcdev.bestplaystv.ui.view.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_plays.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : PlaysActivity() {
@@ -21,19 +23,21 @@ class MainActivity : PlaysActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(com.jcdev.bestplaystv.R.layout.activity_main)
 
         val viewModel = ViewModelProviders.of(this)
             .get(MainViewModel::class.java)
 
-        gameListListAdapter = PopularGamesListAdapter(ArrayList(0))
-        { game: Game, imageGame : ImageView ->  onPopularGameClicked(game, imageGame)}
+        gameListListAdapter =
+            PopularGamesListAdapter(ArrayList(0))
+            { game: Game, imageGame: ImageView -> onPopularGameClicked(game, imageGame) }
         popularGamesView.layoutManager = GridLayoutManager(this, 2)
         popularGamesView.adapter = gameListListAdapter
         viewModel.popularVideoGames.observe(this, Observer {
             gameListListAdapter.loadItems(it!!.toList())
         })
-        viewModel.requestMostPopularGames()
+
+        viewModel.requestMostPopularGames(shouldReloadGameDatabase())
 
 
         searchIcon.setOnClickListener {
@@ -52,5 +56,22 @@ class MainActivity : PlaysActivity() {
         bundle.putSerializable("game", game)
         intent.putExtras(bundle)
         startActivity(intent)
+    }
+
+    private fun shouldReloadGameDatabase(): Boolean {
+        val sharedPreferences = getSharedPreferences("playsPreferences", Context.MODE_PRIVATE)
+        val lastReloadHours = sharedPreferences.getLong("last_load", 0)
+        val rightNow = Calendar.getInstance().timeInMillis
+        return if (lastReloadHours == 0L) {
+            sharedPreferences.edit().putLong("last_load", rightNow).apply()
+            true
+        } else {
+            if (rightNow - lastReloadHours >= 86400000) {
+                sharedPreferences.edit().putLong("last_load", rightNow).apply()
+                true
+            } else {
+                false
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.jcdev.bestplaystv.view.adapter
+package com.jcdev.bestplaystv.ui.view.adapter
 
 import android.view.LayoutInflater
 import android.view.View
