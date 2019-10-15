@@ -1,4 +1,4 @@
-package com.jcdev.bestplaystv.viewmodel
+package com.jcdev.bestplaystv.ui.view.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.jcdev.bestplaystv.database.PlaysDatabase
