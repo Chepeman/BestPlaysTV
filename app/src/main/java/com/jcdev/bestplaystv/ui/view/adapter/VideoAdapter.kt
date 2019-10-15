@@ -60,20 +60,19 @@ class VideoAdapter(
                 videoView.visibility = View.GONE
                 videoThumbnail.visibility = View.VISIBLE
 
-                val videoUrl = "https:" + video.thumbnail.replace("exmedium", "exlarge")
-                if (video.videoId.length == 28) {
-                    videoUrl.replace("/media/", "/video/").replace(
-                        "/transcoded/",
-                        "/processed/"
-                    )
+                var thumbnailUrl = "https:" + video.thumbnail.replace("exmedium", "exlarge")
+                thumbnailUrl = if (video.videoId.length == 24) {
+                    thumbnailUrl
+                        .replace("/video/", "/media/")
+                        .replace("/processed/", "/transcoded/")
                 } else {
-                    videoUrl.replace("/video/", "/media/").replace(
-                        "/processed/",
-                        "/transcoded/")
+                    thumbnailUrl
+                        .replace("/media/", "/video/")
+                        .replace("/transcoded/", "/processed/")
                 }
 
                 Picasso.get()
-                    .load("https:" + video.thumbnail.replace("exmedium", "exlarge"))
+                    .load(thumbnailUrl.replace("exmedium", "exlarge"))
                     .fit()
                     .noFade()
                     .centerCrop()
