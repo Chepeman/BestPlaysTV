@@ -59,16 +59,17 @@ class VideoAdapter(
             } else {
                 videoView.visibility = View.GONE
                 videoThumbnail.visibility = View.VISIBLE
-                Picasso.get()
-                    .load("https:" + video.thumbnail.replace("exmedium", "exlarge"))
-                    .fit()
-                    .noFade()
-                    .centerCrop()
-                    .into(videoThumbnail)
                 videoContainer.setOnClickListener {
                     listener(video)
                 }
             }
+
+            Picasso.get()
+                .load("https:" + video.thumbnail.replace("exmedium", "exlarge"))
+                .fit()
+                .noFade()
+                .centerCrop()
+                .into(videoThumbnail)
             videoAuthor.text = video.author.id
             videoTitle.text = video.description
         }
