@@ -17,14 +17,28 @@ import kotlinx.android.synthetic.main.activity_search.*
 class SearchActivity : PlaysActivity() {
 
     private lateinit var searchAdapter: SearchAdapter
+    private lateinit var viewModel: SearchViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val viewModel = ViewModelProviders.of(this)
+        setupUI()
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+        viewModel = ViewModelProviders.of(this)
             .get(SearchViewModel::class.java)
 
+        setupSnackbarObserver(viewModel)
+
+        viewModel.gameList.observe(this, Observer {
+            searchAdapter.loadItems(it)
+        })
+    }
+
+    private fun setupUI() {
         searchAdapter =
             SearchAdapter(ArrayList(0)) { item: Any ->
                 onItemClicked(item)
@@ -42,10 +56,6 @@ class SearchActivity : PlaysActivity() {
                 viewModel.gameAndUserSearch(textChanged.toString())
             }
 
-        })
-
-        viewModel.gameList.observe(this, Observer {
-            searchAdapter.loadItems(it)
         })
     }
 

@@ -10,7 +10,7 @@ import com.jcdev.bestplaystv.model.Game
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.listitem_popular_game.view.*
 
-class PopularGamesListAdapter(var gameList: List<Game>, private val listener: (Game, ImageView) -> Unit) :
+class PopularGamesListAdapter(var gameList: List<Game>, private val listener: (Game) -> Unit) :
     RecyclerView.Adapter<PopularGamesViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): PopularGamesViewHolder {
@@ -42,7 +42,7 @@ class PopularGamesListAdapter(var gameList: List<Game>, private val listener: (G
 }
 
 class PopularGamesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bind(game: Game, listener: (Game, ImageView) -> Unit) = with(itemView) {
+    fun bind(game: Game, listener: (Game) -> Unit) = with(itemView) {
         Picasso.get()
             .load("https:" + game.thumbnail.replace("exmedium", "exlarge"))
             .fit()
@@ -52,7 +52,7 @@ class PopularGamesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
         gameTitleText.text = game.title
         setOnClickListener {
-            listener(game, gameImage)
+            listener(game)
         }
     }
 }

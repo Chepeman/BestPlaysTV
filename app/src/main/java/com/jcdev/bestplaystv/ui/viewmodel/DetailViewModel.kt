@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class DetailViewModel(val id: String, val type: String) : PlaysViewModel() {
 
@@ -23,30 +24,34 @@ class DetailViewModel(val id: String, val type: String) : PlaysViewModel() {
 
     fun getRandomGameVideos() {
         serviceScope.launch {
+            try {
+                if(type == "game") {
+                    val videoRequest = playsTransport.getRandomVideosByIdAsync(id)
+                    val videoResponse = videoRequest.await()
+                    if (videoResponse.isSuccessful) {
+                        val videoEnconded = videoResponse.body()
 
-            if(type == "game") {
-                val videoRequest = playsTransport.getRandomVideosByIdAsync(id)
-                val videoResponse = videoRequest.await()
-                if (videoResponse.isSuccessful) {
-                    val videoEnconded = videoResponse.body()
+                        _randomGameVideos.postValue(videoEnconded?.content?.items)
 
-                    _randomGameVideos.postValue(videoEnconded?.content?.items)
-
+                    } else {
+                        _snackBarMessage.postValue(videoResponse.errorBody().toString())
+                    }
                 } else {
-                    val responseError = videoResponse.errorBody()
-                }
-            } else {
-                val videoRequest = playsTransport.getRandomVideosByIdAsync(id)
-                val videoResponse = videoRequest.await()
-                if (videoResponse.isSuccessful) {
-                    val videoEnconded = videoResponse.body()
+                    val videoRequest = playsTransport.getUserVideosByIdAsync(id)
+                    val videoResponse = videoRequest.await()
+                    if (videoResponse.isSuccessful) {
+                        val videoEnconded = videoResponse.body()
 
-                    _randomGameVideos.postValue(videoEnconded?.content?.items)
+                        _randomGameVideos.postValue(videoEnconded?.content?.items)
 
-                } else {
-                    val responseError = videoResponse.errorBody()
+                    } else {
+                        _snackBarMessage.postValue(videoResponse.errorBody().toString())
+                    }
                 }
+            } catch (e: Exception) {
+                _snackBarMessage.postValue(e.localizedMessage)
             }
+
         }
     }
 

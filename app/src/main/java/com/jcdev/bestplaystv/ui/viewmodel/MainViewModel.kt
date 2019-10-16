@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class MainViewModel : PlaysViewModel() {
     private val viewModelJob = Job()
@@ -20,31 +21,35 @@ class MainViewModel : PlaysViewModel() {
 
     fun requestMostPopularGames(shouldReload: Boolean) {
         serviceScope.launch {
-            if (shouldReload) {
-                val videoGamesList = ArrayList<Game>()
-                val gamesRequest = playsTransport.getGamesAsync()
-                val gamesResponse = gamesRequest.await()
-                if (gamesResponse.isSuccessful) {
-                    val gamesEncoded = gamesResponse.body()
+            try {
+                if (shouldReload) {
+                    val videoGamesList = ArrayList<Game>()
+                    val gamesRequest = playsTransport.getGamesAsync()
+                    val gamesResponse = gamesRequest.await()
+                    if (gamesResponse.isSuccessful) {
+                        val gamesEncoded = gamesResponse.body()
 
-                    gamesEncoded?.content?.games?.asSequence()
-                        ?.sortedByDescending { it.value.stats.videos }?.let { games ->
-                            games.take(20)?.forEach {
-                                it.value.thumbnail.replace("exmedium", "exlarge")
-                                videoGamesList.add(it.value)
+                        gamesEncoded?.content?.games?.asSequence()
+                            ?.sortedByDescending { it.value.stats.videos }?.let { games ->
+                                games.take(20).forEach {
+                                    it.value.thumbnail.replace("exmedium", "exlarge")
+                                    videoGamesList.add(it.value)
+                                }
+
+                                insertAllGamesInDB(games)
                             }
 
-                            insertAllGamesInDB(games)
-                        }
+                        _popularVideoGames.postValue(videoGamesList)
 
-                    _popularVideoGames.postValue(videoGamesList)
-
+                    } else {
+                        _snackBarMessage.postValue(gamesResponse.errorBody().toString())
+                    }
                 } else {
-                    val responseError = gamesResponse.errorBody()
+                    val games = playsRepository.getAllGames().take(20)
+                    _popularVideoGames.postValue(games)
                 }
-            } else {
-                val games = playsRepository.getAllGames().take(20)
-                _popularVideoGames.postValue(games)
+            } catch (e: Exception) {
+                _snackBarMessage.postValue(e.localizedMessage)
             }
         }
     }

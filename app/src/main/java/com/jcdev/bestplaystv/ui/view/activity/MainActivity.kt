@@ -25,31 +25,38 @@ class MainActivity : PlaysActivity() {
         super.onCreate(savedInstanceState)
         setContentView(com.jcdev.bestplaystv.R.layout.activity_main)
 
-        val viewModel = ViewModelProviders.of(this)
-            .get(MainViewModel::class.java)
+        setupUI()
+        setupObservers()
+    }
 
-        gameListListAdapter =
-            PopularGamesListAdapter(ArrayList(0))
-            { game: Game, imageGame: ImageView -> onPopularGameClicked(game, imageGame) }
-        popularGamesView.layoutManager = GridLayoutManager(this, 2)
-        popularGamesView.adapter = gameListListAdapter
-        viewModel.popularVideoGames.observe(this, Observer {
-            gameListListAdapter.loadItems(it)
-        })
-
-        viewModel.requestMostPopularGames(shouldReloadGameDatabase())
-
-
+    private fun setupUI() {
         searchIcon.setOnClickListener {
             val searchIntent = Intent(this, SearchActivity::class.java)
             startActivity(searchIntent)
             overridePendingTransition(0,0)
         }
 
-
+        gameListListAdapter =
+            PopularGamesListAdapter(ArrayList(0))
+            { game: Game -> onPopularGameClicked(game) }
+        popularGamesView.layoutManager = GridLayoutManager(this, 2)
+        popularGamesView.adapter = gameListListAdapter
     }
 
-    private fun onPopularGameClicked(game : Game, imageGame: ImageView) {
+    private fun setupObservers() {
+        val viewModel = ViewModelProviders.of(this)
+            .get(MainViewModel::class.java)
+
+        setupSnackbarObserver(viewModel)
+
+        viewModel.popularVideoGames.observe(this, Observer {
+            gameListListAdapter.loadItems(it)
+        })
+
+        viewModel.requestMostPopularGames(shouldReloadGameDatabase())
+    }
+
+    private fun onPopularGameClicked(game : Game) {
         Log.d("[Plays.TV]", "Clicked! " + game.title)
         val intent = Intent(this, DetailActivity::class.java)
         val bundle = Bundle()

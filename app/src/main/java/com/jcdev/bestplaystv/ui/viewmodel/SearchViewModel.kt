@@ -6,8 +6,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
-class SearchViewModel() : PlaysViewModel() {
+class SearchViewModel : PlaysViewModel() {
     private val viewModelJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Default + viewModelJob)
 
@@ -19,18 +20,22 @@ class SearchViewModel() : PlaysViewModel() {
 
     fun gameAndUserSearch(textChanged: String) {
         serviceScope.launch {
-            val resultList = mutableListOf<Any>()
-            val gamesByQuery = playsRepository.getGamesBySearch(textChanged)
-            val usersByQuery = playsTransport.getUserAsync(textChanged).await()
-            if(usersByQuery.isSuccessful) {
-                usersByQuery.body()?.content?.user?.let { resultList.add(it) }
-            }
+            try {
+                val resultList = mutableListOf<Any>()
+                val gamesByQuery = playsRepository.getGamesBySearch(textChanged)
+                val usersByQuery = playsTransport.getUserAsync(textChanged).await()
+                if (usersByQuery.isSuccessful) {
+                    usersByQuery.body()?.content?.user?.let { resultList.add(it) }
+                }
 
-            gamesByQuery.forEach {
-                resultList.add(it)
-            }
+                gamesByQuery.forEach {
+                    resultList.add(it)
+                }
 
-            _gameList.postValue(resultList)
+                _gameList.postValue(resultList)
+            } catch (e: Exception) {
+                _snackBarMessage.postValue(e.localizedMessage)
+            }
         }
     }
 
