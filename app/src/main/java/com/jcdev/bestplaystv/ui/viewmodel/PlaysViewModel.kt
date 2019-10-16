@@ -1,7 +1,6 @@
-package com.jcdev.bestplaystv.ui.view.viewmodel
+package com.jcdev.bestplaystv.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.jcdev.bestplaystv.database.PlaysDatabase
 import com.jcdev.bestplaystv.database.PlaysRepository
 import com.jcdev.bestplaystv.dependencyinjection.DependencyInjection
 import com.jcdev.bestplaystv.transport.PlaysTransport

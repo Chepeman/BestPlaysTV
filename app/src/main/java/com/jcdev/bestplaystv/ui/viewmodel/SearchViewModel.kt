@@ -1,9 +1,7 @@
-package com.jcdev.bestplaystv.ui.view.viewmodel
+package com.jcdev.bestplaystv.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.jcdev.bestplaystv.model.Game
-import com.jcdev.bestplaystv.model.Video
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -23,7 +21,7 @@ class SearchViewModel() : PlaysViewModel() {
         serviceScope.launch {
             val resultList = mutableListOf<Any>()
             val gamesByQuery = playsRepository.getGamesBySearch(textChanged)
-            val usersByQuery = playsTransport.getUser(textChanged).await()
+            val usersByQuery = playsTransport.getUserAsync(textChanged).await()
             if(usersByQuery.isSuccessful) {
                 usersByQuery.body()?.content?.user?.let { resultList.add(it) }
             }

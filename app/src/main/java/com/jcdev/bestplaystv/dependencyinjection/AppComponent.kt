@@ -2,7 +2,7 @@ package com.jcdev.bestplaystv.dependencyinjection
 
 import android.app.Application
 import com.jcdev.bestplaystv.ui.view.activity.PlaysActivity
-import com.jcdev.bestplaystv.ui.view.viewmodel.PlaysViewModel
+import com.jcdev.bestplaystv.ui.viewmodel.PlaysViewModel
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

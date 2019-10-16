@@ -20,9 +20,8 @@ import com.jcdev.bestplaystv.R
 import com.jcdev.bestplaystv.model.Game
 import com.jcdev.bestplaystv.model.User
 import com.jcdev.bestplaystv.model.Video
-import com.jcdev.bestplaystv.transport.PlaysTransport
 import com.jcdev.bestplaystv.ui.view.adapter.VideoAdapter
-import com.jcdev.bestplaystv.ui.view.viewmodel.DetailViewModel
+import com.jcdev.bestplaystv.ui.viewmodel.DetailViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_game_detail.*
@@ -115,7 +114,7 @@ class DetailActivity : PlaysActivity(), CastPlayer.SessionAvailabilityListener {
             suggestedPlaysView.layoutManager = LinearLayoutManager(this)
             suggestedPlaysView.adapter = videoAdapter
             viewModel.randomGameVideos.observe(this, Observer {
-                videoAdapter.loadItems(it!!.toList())
+                videoAdapter.loadItems(it)
             })
             viewModel.getRandomGameVideos()
         } else {

@@ -1,9 +1,9 @@
-package com.jcdev.bestplaystv.ui.view.viewmodel
+package com.jcdev.bestplaystv.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.jcdev.bestplaystv.model.Game
 import com.jcdev.bestplaystv.model.Video
+import com.jcdev.bestplaystv.ui.viewmodel.PlaysViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -25,7 +25,7 @@ class DetailViewModel(val id: String, val type: String) : PlaysViewModel() {
         serviceScope.launch {
 
             if(type == "game") {
-                val videoRequest = playsTransport.getRandomVideosById(gameId = id)
+                val videoRequest = playsTransport.getRandomVideosByIdAsync(id)
                 val videoResponse = videoRequest.await()
                 if (videoResponse.isSuccessful) {
                     val videoEnconded = videoResponse.body()
@@ -36,7 +36,7 @@ class DetailViewModel(val id: String, val type: String) : PlaysViewModel() {
                     val responseError = videoResponse.errorBody()
                 }
             } else {
-                val videoRequest = playsTransport.getRandomVideosByUserId(userId = id)
+                val videoRequest = playsTransport.getRandomVideosByIdAsync(id)
                 val videoResponse = videoRequest.await()
                 if (videoResponse.isSuccessful) {
                     val videoEnconded = videoResponse.body()

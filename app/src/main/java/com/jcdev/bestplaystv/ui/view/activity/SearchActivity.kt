@@ -11,7 +11,7 @@ import com.jcdev.bestplaystv.R
 import com.jcdev.bestplaystv.model.Game
 import com.jcdev.bestplaystv.model.User
 import com.jcdev.bestplaystv.ui.view.adapter.SearchAdapter
-import com.jcdev.bestplaystv.ui.view.viewmodel.SearchViewModel
+import com.jcdev.bestplaystv.ui.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : PlaysActivity() {
@@ -45,7 +45,7 @@ class SearchActivity : PlaysActivity() {
         })
 
         viewModel.gameList.observe(this, Observer {
-            searchAdapter.loadItems(it!!.toList())
+            searchAdapter.loadItems(it)
         })
     }
 

@@ -10,7 +10,7 @@ import com.jcdev.bestplaystv.model.Game
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.listitem_popular_game.view.*
 
-class PopularGamesListAdapter(var gameList: List<Game>, val listener: (Game, ImageView) -> Unit) :
+class PopularGamesListAdapter(var gameList: List<Game>, private val listener: (Game, ImageView) -> Unit) :
     RecyclerView.Adapter<PopularGamesViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): PopularGamesViewHolder {

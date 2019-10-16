@@ -1,4 +1,4 @@
-package com.jcdev.bestplaystv.ui.view.viewmodel
+package com.jcdev.bestplaystv.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,7 +22,7 @@ class MainViewModel : PlaysViewModel() {
         serviceScope.launch {
             if (shouldReload) {
                 val videoGamesList = ArrayList<Game>()
-                val gamesRequest = playsTransport.getGames()
+                val gamesRequest = playsTransport.getGamesAsync()
                 val gamesResponse = gamesRequest.await()
                 if (gamesResponse.isSuccessful) {
                     val gamesEncoded = gamesResponse.body()

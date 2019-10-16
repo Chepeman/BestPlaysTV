@@ -16,7 +16,9 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "baseUrl", "\"https://api.plays.tv/\""
+        buildConfigField "String", "baseUrl", '"https://api.plays.tv"'
+        buildConfigField "String", "app_id", '"BLBmNaNqOI3nCI_WBYNnOYFtBLC_BqGYCaJt"'
+        buildConfigField "String", "app_key", '"EL0EIqDD7Rd81r9-gSrjLAHHE20SjSKa"'
     }
     buildTypes {
         release {

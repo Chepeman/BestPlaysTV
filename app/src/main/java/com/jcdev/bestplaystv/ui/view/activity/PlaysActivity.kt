@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.jcdev.bestplaystv.dependencyinjection.DependencyInjection
 import com.jcdev.bestplaystv.transport.PlaysTransport
-import com.jcdev.bestplaystv.transport.Transport
 import javax.inject.Inject
 
 open class PlaysActivity : AppCompatActivity() {

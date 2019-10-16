@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.jcdev.bestplaystv.model.Game
 import com.jcdev.bestplaystv.ui.view.adapter.PopularGamesListAdapter
-import com.jcdev.bestplaystv.ui.view.viewmodel.MainViewModel
+import com.jcdev.bestplaystv.ui.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_plays.*
 import java.util.*
@@ -34,7 +34,7 @@ class MainActivity : PlaysActivity() {
         popularGamesView.layoutManager = GridLayoutManager(this, 2)
         popularGamesView.adapter = gameListListAdapter
         viewModel.popularVideoGames.observe(this, Observer {
-            gameListListAdapter.loadItems(it!!.toList())
+            gameListListAdapter.loadItems(it)
         })
 
         viewModel.requestMostPopularGames(shouldReloadGameDatabase())

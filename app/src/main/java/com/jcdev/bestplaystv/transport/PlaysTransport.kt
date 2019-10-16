@@ -1,43 +1,31 @@
 package com.jcdev.bestplaystv.transport
 
-import android.content.Context
-import com.jcdev.bestplaystv.R
 import com.jcdev.bestplaystv.model.GameResponse
 import com.jcdev.bestplaystv.model.UserResponse
 import com.jcdev.bestplaystv.model.VideoResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
-class PlaysTransport(private val transport: Transport, private val context: Context) {
+interface PlaysTransport {
+    @GET("data/v1/games")
+    fun getGamesAsync(): Deferred<Response<GameResponse>>
 
-    fun getGames(): Deferred<Response<GameResponse>> {
-        return transport.getGames(
-            context.getString(R.string.app_id),
-            context.getString(R.string.app_key)
-        )
-    }
+    @GET("data/v1/videos/search")
+    fun getRandomVideosByIdAsync(
+        @Query("gameId") gameId: String
+    ): Deferred<Response<VideoResponse>>
 
-    fun getRandomVideosById(gameId: String): Deferred<Response<VideoResponse>> {
-        return transport.getRandomVideosById(
-            context.getString(R.string.app_id),
-            context.getString(R.string.app_key),
-            gameId
-        )
-    }
+    @GET("data/v1/videos/search")
+    fun getUserVideosByIdAsync(
+        @Query("userId") userId: String
+    ): Deferred<Response<VideoResponse>>
 
-    fun getRandomVideosByUserId(userId: String): Deferred<Response<VideoResponse>> {
-        return transport.getUserVideosById(
-            context.getString(R.string.app_id),
-            context.getString(R.string.app_key),
-            userId
-        )
-    }
 
-    fun getUser(username: String): Deferred<Response<UserResponse>> {
-        return transport.getUser(
-            username,
-            context.getString(R.string.app_id),
-            context.getString(R.string.app_key)
-        )
-    }
+    @GET("/data/v1/users/{username}")
+    fun getUserAsync(
+        @Path("username") username: String
+    ): Deferred<Response<UserResponse>>
 }
