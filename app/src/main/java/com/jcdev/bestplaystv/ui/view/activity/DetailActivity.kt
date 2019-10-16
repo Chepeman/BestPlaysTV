@@ -36,6 +36,7 @@ class DetailActivity : PlaysActivity(), CastPlayer.SessionAvailabilityListener {
     private lateinit var castPlayer: CastPlayer
     private var mediaItems: Array<MediaQueueItem>? = null
     private var isCastReady = false
+    private lateinit var viewModel: DetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,28 +48,15 @@ class DetailActivity : PlaysActivity(), CastPlayer.SessionAvailabilityListener {
         setupObservers()
     }
 
-    private fun setupObservers() {
-        val viewModel = ViewModelProviders.of(this, viewModelFactory {
-            DetailViewModel(
-                id,
-                type
-            )
-        }).get(DetailViewModel::class.java)
-
-        setupSnackbarObserver(viewModel)
-
-        viewModel.randomGameVideos.observe(this, Observer {
-            videoAdapter.loadItems(it)
-        })
-
-        viewModel.getRandomGameVideos()
-    }
-
     private fun setupUI() {
         castContext = CastContext.getSharedInstance(this)
         castPlayer = CastPlayer(castContext)
         castPlayer.setSessionAvailabilityListener(this)
         isCastReady = castPlayer.isCastSessionAvailable
+
+        refreshVideos.setOnRefreshListener {
+            viewModel.getRandomGameVideos()
+        }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -90,6 +78,24 @@ class DetailActivity : PlaysActivity(), CastPlayer.SessionAvailabilityListener {
         } else {
             finishAfterTransition()
         }
+    }
+
+    private fun setupObservers() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory {
+            DetailViewModel(
+                id,
+                type
+            )
+        }).get(DetailViewModel::class.java)
+
+        setupSnackbarObserver(viewModel)
+
+        viewModel.randomGameVideos.observe(this, Observer {
+            videoAdapter.loadItems(it)
+            refreshVideos.isRefreshing = false
+        })
+
+        viewModel.getRandomGameVideos()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

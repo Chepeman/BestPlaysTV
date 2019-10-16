@@ -28,10 +28,9 @@ class MainViewModel : PlaysViewModel() {
                     val gamesResponse = gamesRequest.await()
                     if (gamesResponse.isSuccessful) {
                         val gamesEncoded = gamesResponse.body()
-
                         gamesEncoded?.content?.games?.asSequence()
                             ?.sortedByDescending { it.value.stats.videos }?.let { games ->
-                                games.take(20).forEach {
+                                games.toMutableList().shuffled().take(20).forEach {
                                     it.value.thumbnail.replace(
                                         "exmedium",
                                         "exlarge"
@@ -48,7 +47,7 @@ class MainViewModel : PlaysViewModel() {
                         _snackBarMessage.postValue(gamesResponse.errorBody().toString())
                     }
                 } else {
-                    val games = playsRepository.getAllGames().take(20)
+                    val games = playsRepository.getAllGames().toMutableList().shuffled().take(20)
                     _popularVideoGames.postValue(games)
                 }
             } catch (e: Exception) {

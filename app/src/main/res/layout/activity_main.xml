@@ -12,9 +12,15 @@
             android:id="@+id/toolbar_top"
             layout="@layout/toolbar_plays"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/popularGamesView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refreshGames"
             android:layout_width="match_parent"
-              android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/popularGamesView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 </LinearLayout>

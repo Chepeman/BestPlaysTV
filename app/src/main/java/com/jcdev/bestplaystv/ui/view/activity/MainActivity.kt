@@ -20,6 +20,7 @@ import kotlin.collections.ArrayList
 class MainActivity : PlaysActivity() {
 
     private lateinit var gameListListAdapter: PopularGamesListAdapter
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,16 +42,21 @@ class MainActivity : PlaysActivity() {
             { game: Game -> onPopularGameClicked(game) }
         popularGamesView.layoutManager = GridLayoutManager(this, 2)
         popularGamesView.adapter = gameListListAdapter
+
+        refreshGames.setOnRefreshListener {
+            viewModel.requestMostPopularGames(shouldReloadGameDatabase())
+        }
     }
 
     private fun setupObservers() {
-        val viewModel = ViewModelProviders.of(this)
+        viewModel = ViewModelProviders.of(this)
             .get(MainViewModel::class.java)
 
         setupSnackbarObserver(viewModel)
 
         viewModel.popularVideoGames.observe(this, Observer {
             gameListListAdapter.loadItems(it)
+            refreshGames.isRefreshing = false
         })
 
         viewModel.requestMostPopularGames(shouldReloadGameDatabase())
