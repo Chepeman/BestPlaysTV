@@ -43,7 +43,11 @@ class SearchActivity : PlaysActivity() {
             SearchAdapter(ArrayList(0)) { item: Any ->
                 onItemClicked(item)
             }
-        resultsView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        resultsView.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
         resultsView.adapter = searchAdapter
         searchText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {

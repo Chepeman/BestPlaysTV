@@ -1,8 +1,8 @@
 package com.jcdev.bestplaystv.transport
 
-import com.jcdev.bestplaystv.model.GameResponse
-import com.jcdev.bestplaystv.model.UserResponse
-import com.jcdev.bestplaystv.model.VideoResponse
+import com.jcdev.bestplaystv.model.response.GameResponse
+import com.jcdev.bestplaystv.model.response.UserResponse
+import com.jcdev.bestplaystv.model.response.VideoResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET

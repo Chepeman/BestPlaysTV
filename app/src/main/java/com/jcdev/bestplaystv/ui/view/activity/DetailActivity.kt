@@ -151,15 +151,21 @@ class DetailActivity : PlaysActivity(), CastPlayer.SessionAvailabilityListener {
             id = game.id
             type = "game"
             gameTitleText.text = game.title
-            gameTitleViews.text = game.stats.videos.toString() + " Views"
+            gameTitleViews.text = resources.getString(
+                R.string.views_subtitle,
+                game.stats.videos.toString()
+            )
             Picasso.get()
-                .load("https:" + game.thumbnail.replace("exmedium", "exlarge"))
+                .load("https:" + game.thumbnail.replace(
+                    "exmedium",
+                    "exlarge"
+                ))
                 .fit()
                 .noFade()
                 .centerCrop()
                 .into(gameImage, object : Callback {
                     override fun onSuccess() {
-                        supportStartPostponedEnterTransition();
+                        supportStartPostponedEnterTransition()
                     }
 
                     override fun onError(e: Exception?) {
@@ -171,19 +177,25 @@ class DetailActivity : PlaysActivity(), CastPlayer.SessionAvailabilityListener {
             id = user.id
             type = "user"
             gameTitleText.text = user.id
-            gameTitleViews.text = user.stats.videos.toString() + " Views"
+            gameTitleViews.text = resources.getString(
+                R.string.views_subtitle,
+                user.stats.videos.toString()
+            )
             Picasso.get()
-                .load("https:" + user.avatar.replace("exmedium", "exlarge"))
+                .load("https:" + user.avatar.replace(
+                    "exmedium",
+                    "exlarge"
+                ))
                 .fit()
                 .noFade()
                 .centerCrop()
                 .into(gameImage, object : Callback {
                     override fun onSuccess() {
-                        supportStartPostponedEnterTransition();
+                        supportStartPostponedEnterTransition()
                     }
 
                     override fun onError(e: Exception?) {
-                        supportStartPostponedEnterTransition();
+                        supportStartPostponedEnterTransition()
                     }
                 })
         }

@@ -66,7 +66,10 @@ class MainActivity : PlaysActivity() {
     }
 
     private fun shouldReloadGameDatabase(): Boolean {
-        val sharedPreferences = getSharedPreferences("playsPreferences", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(
+            "playsPreferences",
+            Context.MODE_PRIVATE
+        )
         val lastReloadHours = sharedPreferences.getLong("last_load", 0)
         val rightNow = Calendar.getInstance().timeInMillis
         return if (lastReloadHours == 0L) {

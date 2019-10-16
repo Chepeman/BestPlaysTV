@@ -3,4 +3,5 @@
     <string name="search_by">Search by game or by username</string>
     <string name="related_videos">Related Videos</string>
     <string name="media_route_menu_title">Cast Video</string>
+    <string name="views_subtitle">"%1$s Views</string>
 </resources>
