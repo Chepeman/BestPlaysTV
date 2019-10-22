@@ -11,25 +11,43 @@ import com.jcdev.bestplaystv.R
 import com.jcdev.bestplaystv.model.Game
 import com.jcdev.bestplaystv.model.User
 import com.jcdev.bestplaystv.ui.view.adapter.SearchAdapter
-import com.jcdev.bestplaystv.ui.view.viewmodel.SearchViewModel
+import com.jcdev.bestplaystv.ui.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : PlaysActivity() {
 
     private lateinit var searchAdapter: SearchAdapter
+    private lateinit var viewModel: SearchViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val viewModel = ViewModelProviders.of(this)
+        setupUI()
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+        viewModel = ViewModelProviders.of(this)
             .get(SearchViewModel::class.java)
 
+        setupSnackbarObserver(viewModel)
+
+        viewModel.gameList.observe(this, Observer {
+            searchAdapter.loadItems(it)
+        })
+    }
+
+    private fun setupUI() {
         searchAdapter =
             SearchAdapter(ArrayList(0)) { item: Any ->
                 onItemClicked(item)
             }
-        resultsView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        resultsView.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
         resultsView.adapter = searchAdapter
         searchText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -42,10 +60,6 @@ class SearchActivity : PlaysActivity() {
                 viewModel.gameAndUserSearch(textChanged.toString())
             }
 
-        })
-
-        viewModel.gameList.observe(this, Observer {
-            searchAdapter.loadItems(it!!.toList())
         })
     }
 

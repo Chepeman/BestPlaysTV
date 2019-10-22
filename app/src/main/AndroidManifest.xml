@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.jcdev.bestplaystv">
+        package="com.jcdev.bestplaystv">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
             android:name=".PlaysApp"
@@ -16,17 +16,22 @@
         <meta-data
                 android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
                 android:value="com.google.android.exoplayer2.ext.cast.DefaultCastOptionsProvider" />
-        <activity android:name=".ui.view.activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+        <activity
+                android:name=".ui.view.activity.MainActivity"
+                android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.view.activity.SearchActivity">
-        </activity>
-        <activity android:name=".ui.view.activity.DetailActivity">
-        </activity>
+        <activity
+                android:name=".ui.view.activity.SearchActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".ui.view.activity.DetailActivity"
+                android:screenOrientation="portrait" />
     </application>
 
 </manifest>

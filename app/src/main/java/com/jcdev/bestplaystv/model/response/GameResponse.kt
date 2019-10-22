@@ -1,6 +1,6 @@
-package com.jcdev.bestplaystv.model
+package com.jcdev.bestplaystv.model.response
 import com.google.gson.annotations.SerializedName
-import org.json.JSONObject
+import com.jcdev.bestplaystv.model.Game
 
 
 data class GameResponse(

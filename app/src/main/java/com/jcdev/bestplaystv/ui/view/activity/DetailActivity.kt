@@ -20,9 +20,8 @@ import com.jcdev.bestplaystv.R
 import com.jcdev.bestplaystv.model.Game
 import com.jcdev.bestplaystv.model.User
 import com.jcdev.bestplaystv.model.Video
-import com.jcdev.bestplaystv.transport.PlaysTransport
 import com.jcdev.bestplaystv.ui.view.adapter.VideoAdapter
-import com.jcdev.bestplaystv.ui.view.viewmodel.DetailViewModel
+import com.jcdev.bestplaystv.ui.viewmodel.DetailViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_game_detail.*
@@ -37,6 +36,7 @@ class DetailActivity : PlaysActivity(), CastPlayer.SessionAvailabilityListener {
     private lateinit var castPlayer: CastPlayer
     private var mediaItems: Array<MediaQueueItem>? = null
     private var isCastReady = false
+    private lateinit var viewModel: DetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +44,19 @@ class DetailActivity : PlaysActivity(), CastPlayer.SessionAvailabilityListener {
         setContentView(R.layout.activity_game_detail)
         setSupportActionBar(toolbar)
 
+        setupUI()
+        setupObservers()
+    }
+
+    private fun setupUI() {
         castContext = CastContext.getSharedInstance(this)
         castPlayer = CastPlayer(castContext)
         castPlayer.setSessionAvailabilityListener(this)
         isCastReady = castPlayer.isCastSessionAvailable
+
+        refreshVideos.setOnRefreshListener {
+            viewModel.getRandomGameVideos()
+        }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -56,56 +65,7 @@ class DetailActivity : PlaysActivity(), CastPlayer.SessionAvailabilityListener {
         val bundle = intent.extras
         if (bundle != null && (bundle.containsKey("game") || bundle.containsKey("user"))) {
 
-            if (bundle.containsKey("game")) {
-                val game = bundle.get("game") as Game
-                id = game.id
-                type = "game"
-                gameTitleText.text = game.title
-                gameTitleViews.text = game.stats.videos.toString() + " Views"
-                Picasso.get()
-                    .load("https:" + game.thumbnail.replace("exmedium", "exlarge"))
-                    .fit()
-                    .noFade()
-                    .centerCrop()
-                    .into(gameImage, object : Callback {
-                        override fun onSuccess() {
-                            supportStartPostponedEnterTransition();
-                        }
-
-                        override fun onError(e: Exception?) {
-                            supportStartPostponedEnterTransition()
-                        }
-                    })
-            } else {
-                val user = bundle.get("user") as User
-                id = user.id
-                type = "user"
-                gameTitleText.text = user.id
-                gameTitleViews.text = user.stats.videos.toString() + " Views"
-                Picasso.get()
-                    .load("https:" + user.avatar.replace("exmedium", "exlarge"))
-                    .fit()
-                    .noFade()
-                    .centerCrop()
-                    .into(gameImage, object : Callback {
-                        override fun onSuccess() {
-                            supportStartPostponedEnterTransition();
-                        }
-
-                        override fun onError(e: Exception?) {
-                            supportStartPostponedEnterTransition();
-                        }
-                    })
-            }
-
-            //InitModelView
-            val viewModel = ViewModelProviders.of(this, viewModelFactory {
-                DetailViewModel(
-                    id,
-                    type
-                )
-            })
-                .get(DetailViewModel::class.java)
+            getTypeAndId(bundle)
 
             videoAdapter =
                 VideoAdapter(ArrayList(0)) { video: Video ->
@@ -114,13 +74,28 @@ class DetailActivity : PlaysActivity(), CastPlayer.SessionAvailabilityListener {
             videoAdapter.setCastReady(castPlayer.isCastSessionAvailable)
             suggestedPlaysView.layoutManager = LinearLayoutManager(this)
             suggestedPlaysView.adapter = videoAdapter
-            viewModel.randomGameVideos.observe(this, Observer {
-                videoAdapter.loadItems(it!!.toList())
-            })
-            viewModel.getRandomGameVideos()
+
         } else {
             finishAfterTransition()
         }
+    }
+
+    private fun setupObservers() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory {
+            DetailViewModel(
+                id,
+                type
+            )
+        }).get(DetailViewModel::class.java)
+
+        setupSnackbarObserver(viewModel)
+
+        viewModel.randomGameVideos.observe(this, Observer {
+            videoAdapter.loadItems(it)
+            refreshVideos.isRefreshing = false
+        })
+
+        viewModel.getRandomGameVideos()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -176,7 +151,63 @@ class DetailActivity : PlaysActivity(), CastPlayer.SessionAvailabilityListener {
         videoAdapter.setCastReady(false)
     }
 
-    fun connectChromecast(video: Video) {
+    private fun getTypeAndId(bundle: Bundle) {
+        if (bundle.containsKey("game")) {
+            val game = bundle.get("game") as Game
+            id = game.id
+            type = "game"
+            gameTitleText.text = game.title
+            gameTitleViews.text = resources.getString(
+                R.string.views_subtitle,
+                game.stats.videos.toString()
+            )
+            Picasso.get()
+                .load("https:" + game.thumbnail.replace(
+                    "exmedium",
+                    "exlarge"
+                ))
+                .fit()
+                .noFade()
+                .centerCrop()
+                .into(gameImage, object : Callback {
+                    override fun onSuccess() {
+                        supportStartPostponedEnterTransition()
+                    }
+
+                    override fun onError(e: Exception?) {
+                        supportStartPostponedEnterTransition()
+                    }
+                })
+        } else {
+            val user = bundle.get("user") as User
+            id = user.id
+            type = "user"
+            gameTitleText.text = user.id
+            gameTitleViews.text = resources.getString(
+                R.string.views_subtitle,
+                user.stats.videos.toString()
+            )
+            Picasso.get()
+                .load("https:" + user.avatar.replace(
+                    "exmedium",
+                    "exlarge"
+                ))
+                .fit()
+                .noFade()
+                .centerCrop()
+                .into(gameImage, object : Callback {
+                    override fun onSuccess() {
+                        supportStartPostponedEnterTransition()
+                    }
+
+                    override fun onError(e: Exception?) {
+                        supportStartPostponedEnterTransition()
+                    }
+                })
+        }
+    }
+
+    private fun connectChromecast(video: Video) {
         val resolutions = video.resolutions.split(",").toMutableList()
         resolutions.remove("1080") //Some chromecast doesn't play 1080p videos.
 

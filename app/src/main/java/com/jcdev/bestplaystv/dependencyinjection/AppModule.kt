@@ -8,7 +8,6 @@ import com.jcdev.bestplaystv.BuildConfig
 import com.jcdev.bestplaystv.database.PlaysDatabase
 import com.jcdev.bestplaystv.database.PlaysRepository
 import com.jcdev.bestplaystv.transport.PlaysTransport
-import com.jcdev.bestplaystv.transport.Transport
 import dagger.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -21,15 +20,8 @@ object AppModule {
     @Provides
     @Reusable
     @JvmStatic
-    internal fun provideTransport(transport: Transport, application: Application): PlaysTransport {
-        return PlaysTransport(transport, application)
-    }
-
-    @Provides
-    @Reusable
-    @JvmStatic
-    internal fun providePlaysTransport(retrofit: Retrofit): Transport {
-        return retrofit.create(Transport::class.java)
+    internal fun providePlaysTransport(retrofit: Retrofit): PlaysTransport {
+        return retrofit.create(PlaysTransport::class.java)
     }
     /**
      * Provides the Retrofit object.
@@ -45,6 +37,14 @@ object AppModule {
 
         val client : OkHttpClient = OkHttpClient.Builder().apply {
             this.addInterceptor(interceptor)
+            this.addInterceptor { chain ->
+                val request = chain.request()
+                val httpUrl = request.url().newBuilder()
+                    .addQueryParameter("appid", BuildConfig.app_id)
+                    .addQueryParameter("appkey", BuildConfig.app_key).build()
+                val newRequest = request.newBuilder().url(httpUrl).build()
+                chain.proceed(newRequest)
+            }
         }.build()
 
         return Retrofit.Builder()

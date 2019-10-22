@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.jcdev.bestplaystv.model.Game
 import com.jcdev.bestplaystv.ui.view.adapter.PopularGamesListAdapter
-import com.jcdev.bestplaystv.ui.view.viewmodel.MainViewModel
+import com.jcdev.bestplaystv.ui.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_plays.*
 import java.util.*
@@ -20,36 +20,49 @@ import kotlin.collections.ArrayList
 class MainActivity : PlaysActivity() {
 
     private lateinit var gameListListAdapter: PopularGamesListAdapter
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.jcdev.bestplaystv.R.layout.activity_main)
 
-        val viewModel = ViewModelProviders.of(this)
-            .get(MainViewModel::class.java)
+        setupUI()
+        setupObservers()
+    }
 
-        gameListListAdapter =
-            PopularGamesListAdapter(ArrayList(0))
-            { game: Game, imageGame: ImageView -> onPopularGameClicked(game, imageGame) }
-        popularGamesView.layoutManager = GridLayoutManager(this, 2)
-        popularGamesView.adapter = gameListListAdapter
-        viewModel.popularVideoGames.observe(this, Observer {
-            gameListListAdapter.loadItems(it!!.toList())
-        })
-
-        viewModel.requestMostPopularGames(shouldReloadGameDatabase())
-
-
+    private fun setupUI() {
         searchIcon.setOnClickListener {
             val searchIntent = Intent(this, SearchActivity::class.java)
             startActivity(searchIntent)
             overridePendingTransition(0,0)
         }
 
+        gameListListAdapter =
+            PopularGamesListAdapter(ArrayList(0))
+            { game: Game -> onPopularGameClicked(game) }
+        popularGamesView.layoutManager = GridLayoutManager(this, 2)
+        popularGamesView.adapter = gameListListAdapter
 
+        refreshGames.setOnRefreshListener {
+            viewModel.requestMostPopularGames(shouldReloadGameDatabase())
+        }
     }
 
-    private fun onPopularGameClicked(game : Game, imageGame: ImageView) {
+    private fun setupObservers() {
+        viewModel = ViewModelProviders.of(this)
+            .get(MainViewModel::class.java)
+
+        setupSnackbarObserver(viewModel)
+
+        viewModel.popularVideoGames.observe(this, Observer {
+            gameListListAdapter.loadItems(it)
+            refreshGames.isRefreshing = false
+        })
+
+        viewModel.requestMostPopularGames(shouldReloadGameDatabase())
+    }
+
+    private fun onPopularGameClicked(game : Game) {
         Log.d("[Plays.TV]", "Clicked! " + game.title)
         val intent = Intent(this, DetailActivity::class.java)
         val bundle = Bundle()
@@ -59,7 +72,10 @@ class MainActivity : PlaysActivity() {
     }
 
     private fun shouldReloadGameDatabase(): Boolean {
-        val sharedPreferences = getSharedPreferences("playsPreferences", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(
+            "playsPreferences",
+            Context.MODE_PRIVATE
+        )
         val lastReloadHours = sharedPreferences.getLong("last_load", 0)
         val rightNow = Calendar.getInstance().timeInMillis
         return if (lastReloadHours == 0L) {

@@ -42,7 +42,7 @@ class FullscreenClient(private val parent: ViewGroup) : WebChromeClient() {
     }
 
     private fun getRootParent(view: View): View {
-        return if (view.parent != null) {
+        return if (view.parent != null && view.id != R.id.root_view) {
             getRootParent(view.parent as View)
         } else {
             view

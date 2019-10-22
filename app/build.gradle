@@ -16,7 +16,9 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "baseUrl", "\"https://api.plays.tv/\""
+        buildConfigField "String", "baseUrl", '"https://api.plays.tv"'
+        buildConfigField "String", "app_id", '"BLBmNaNqOI3nCI_WBYNnOYFtBLC_BqGYCaJt"'
+        buildConfigField "String", "app_key", '"EL0EIqDD7Rd81r9-gSrjLAHHE20SjSKa"'
     }
     buildTypes {
         release {
@@ -33,31 +35,30 @@ kapt {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
-    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
-    // ViewModel and LiveData
-    def lifecycle_version = "1.1.1"
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$coroutines_adapter_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation "androidx.recyclerview:recyclerview:$widgets_version"
+    implementation "androidx.cardview:cardview:$widgets_version"
+    implementation "androidx.appcompat:appcompat:$compat_version"
+    implementation "com.google.android.material:material:$material_version"
+    implementation "com.squareup.picasso:picasso:$picasso_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "com.google.android.exoplayer:exoplayer-core:$exo_version"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exo_version"
+    implementation "com.google.android.exoplayer:extension-cast:$exo_version"
+
     testImplementation 'androidx.arch.core:core-testing:2.0.0'
-    kapt 'com.google.dagger:dagger-compiler:2.12'
-    kapt "android.arch.persistence.room:compiler:$room_version"
-    implementation 'com.google.dagger:dagger:2.12'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation "androidx.room:room-runtime:$room_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "android.arch.persistence.room:compiler:$room_version"
 
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.8.0'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.8.0'
-    implementation 'com.google.android.exoplayer:extension-cast:2.8.0'
 }
