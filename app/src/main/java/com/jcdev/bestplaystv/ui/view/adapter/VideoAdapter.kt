@@ -1,11 +1,13 @@
 package com.jcdev.bestplaystv.ui.view.adapter
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.jcdev.bestplaystv.R
+import com.jcdev.bestplaystv.custom.FullscreenClient
 import com.jcdev.bestplaystv.model.Video
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.listitem_related_video.view.*
@@ -50,6 +52,16 @@ class VideoAdapter(
     class VideoVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(video: Video, isCastReady: Boolean, listener: (Video) -> Unit) = with(itemView) {
             if (!isCastReady) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    if(videoView.webChromeClient == null) {
+                        videoView.webChromeClient = FullscreenClient(videoContainer)
+                    } else {
+                        videoView.webChromeClient = null
+                        videoView.webChromeClient = FullscreenClient(videoContainer)
+                    }
+                }
+
                 videoView.visibility = View.VISIBLE
                 videoThumbnail.visibility = View.GONE
                 videoView.loadUrl("https:" + video.embed)

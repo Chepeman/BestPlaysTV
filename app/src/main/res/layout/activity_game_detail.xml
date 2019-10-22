@@ -1,82 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:orientation="vertical"
         android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:theme="@style/ToolBarStyle"
-            android:background="@color/colorPrimary"
-            app:layout_collapseMode="pin">
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:minHeight="?attr/actionBarSize"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                tools:context=".ui.view.activity.DetailActivity">
-
-            <ImageView
-                    android:id="@+id/gameImage"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-            />
-
-            <TextView
-                    android:id="@+id/gameTitleText"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="regular"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:gravity="start"
-                    android:textColor="@color/white"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp"
-                    tools:text="Counter Strike : Global Offensive"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    app:layout_constraintStart_toEndOf="@id/gameImage"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/gameTitleViews"
-            />
-
-            <TextView
-                    android:id="@+id/gameTitleViews"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="regular"
-                    android:textSize="15sp"
-                    android:gravity="start"
-                    android:textColor="@color/white"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    tools:text="Counter Strike : Global Offensive"
-                    app:layout_constraintStart_toEndOf="@id/gameImage"
-                    app:layout_constraintTop_toBottomOf="@id/gameTitleText"
-                    app:layout_constraintBottom_toBottomOf="parent"
-            />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.appcompat.widget.Toolbar>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/suggestedPlaysView"
+    <FrameLayout
+            android:id="@+id/fullscreenContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            android:visibility="gone"/>
 
-</LinearLayout>
+    <LinearLayout
+            android:id="@+id/contentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                app:layout_collapseMode="pin"
+                app:theme="@style/ToolBarStyle">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:minHeight="?attr/actionBarSize"
+                    tools:context=".ui.view.activity.DetailActivity">
+
+                <ImageView
+                        android:id="@+id/gameImage"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                        android:id="@+id/gameTitleText"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="regular"
+                        android:gravity="start"
+                        android:maxLines="1"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@id/gameTitleViews"
+                        app:layout_constraintStart_toEndOf="@id/gameImage"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Counter Strike : Global Offensive" />
+
+                <TextView
+                        android:id="@+id/gameTitleViews"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="regular"
+                        android:gravity="start"
+                        android:maxLines="1"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/gameImage"
+                        app:layout_constraintTop_toBottomOf="@id/gameTitleText"
+                        tools:text="Counter Strike : Global Offensive" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/suggestedPlaysView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </LinearLayout>
+
+</FrameLayout>
+
